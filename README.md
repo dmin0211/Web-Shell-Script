@@ -1,5 +1,22 @@
 # web-server-was
 
+## nginx-initialize.sh
+nginx 설치 및 ssl.sh, virtual-server.sh 실행하는 스크립트
+
+## virtual-server.sh
+nginx 가상 서버 설정 파일을 추가하는 스크립트
+
+* ssl 인증서가 발급된 상태에서만 실행 가능(https 가상 서버 추가)
+
+```js
+./virtual-server.sh [Root Domain] [Sub Domain] [Upstream name] [Was Addresses]
+```
+
+- Root Domain : 인증서를 발급받은 도메인 주소만 가능함. 필수로 입력해야지 정상적으로 스크립트 실행
+- Sub Domain : server 로 등록할 sub domain 입력.(Default "[sub_domain]")
+- Upstream name : upstream name 으로 사용할 문자열 입력.(Default "[upstream_name]")
+- Was Addresses : 로드 밸런싱할 was 주소들 입력. (Default "server [was_address]"-> 실행시 장애가 발생합니다.)
+
 ## ssl.sh
 와일드카드 ssl 인증서 발급 스크립트
 ```js
