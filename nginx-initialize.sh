@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -f /etc/nginx/nginx.conf ]; then
-	sudo apt-get install nginx;
+	sudo apt-get install nginx; 
 fi
 
 if [ ! -d "/etc/letsencrypt/live/$1" ]; then
@@ -10,6 +10,12 @@ if [ ! -d "/etc/letsencrypt/live/$1" ]; then
 	ssl_result= $?
 else
 	echo ssl certificate exist;
+	ssl_result= 0;
 fi
 
+if [ $ssl_result -ne 0 ]; then
+	echo ã…certificate issuance error;
+	exit 3;
+fi;
 
+./virtual-server.sh $1;
