@@ -30,41 +30,56 @@ const forwardConfig = {
     dstPort: dbServer.port
 };
 
-const createPool = (stream) => {
-    pool || (pool = mysql.createPool({
-        ...dbServer,
-        stream
-    }))
-    return pool;
+class db {
+    static singleton = null;
+    _pool = null;
+
+    constructor() {
+        if (db.singleton) return db.singleton;
+        db.singleton = this;
+        return this;
+    }
+
+    createPool() {
+        return new Promise((resolve, reject) => {
+            ssh.on('ready', () => {
+                ssh.forwardOut(
+                    forwardConfig.srcHost,
+                    forwardConfig.srcPort,
+                    forwardConfig.dstHost,
+                    forwardConfig.dstPort,
+                    (err, stream) => {
+                        if (err) return reject(err);
+
+                        try {
+                            const pool = mysql.createPool({
+                                ...dbServer,
+                                stream,
+                                waitForConnections: true,
+                                connectionLimit: 1,
+                                queueLimit: 0
+                            })
+                            resolve(pool);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    }
+                )
+            }).connect(tunnelConfig);
+        })
+    }
+
+    async run(query, callback) {
+        this._pool = this._pool ?? await this.createPool();
+        this._pool.getConnection((err, connection) => {
+            if (err) throw err;
+            connection.query(query, callback);
+            connection.release();
+        })
+    }
 }
 
-const databaseSSH = () => new Promise((resolve, reject) => {
-    ssh.on('ready', () => {
-        ssh.forwardOut(
-            forwardConfig.srcHost,
-            forwardConfig.srcPort,
-            forwardConfig.dstHost,
-            forwardConfig.dstPort,
-            (err, stream) => {
-                if (err) return reject(err);
-
-                try {
-                    const connection = mysql.createConnection({
-                        ...dbServer,
-                        stream
-                    })
-                    resolve(connection);
-                } catch (err) {
-                    reject(err);
-                }
-            }
-        )
-    }).connect(tunnelConfig);
-})
-
-module.exports = run = async (query, callback) => {
-    const connection = await databaseSSH();
-    connection.query(query, (err, result) => {
-        callback(err, result);
-    })
+module.exports = run = async function (query, callback) {
+    const database = new db();
+    await database.run(query, callback);
 }
