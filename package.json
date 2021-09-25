@@ -1,0 +1,26 @@
+{
+  "name": "web-server-was",
+  "version": "1.0.0",
+  "description": "## nginx-initialize.sh nginx 설치 및 ssl.sh, virtual-server.sh 실행하는 스크립트",
+  "main": "express.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmin0211/web-server-was.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmin0211/web-server-was/issues"
+  },
+  "homepage": "https://github.com/dmin0211/web-server-was#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.3.0",
+    "ssh2": "^1.4.0"
+  }
+}
