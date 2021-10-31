@@ -1,9 +1,4 @@
-# SSH Tunneling MySQL
-- [orm](https://github.com/dmin0211/web-server-was/blob/main/orm.js)
-- [connection pool](https://github.com/dmin0211/web-server-was/blob/main/ssh-mysql-connection.js)
-
-
-# web-server-was
+# 서버 Instance 설정을 위한 Shell Script
 
 ## nginx-initialize.sh
 nginx 설치 및 ssl.sh, virtual-server.sh 실행하는 스크립트
