@@ -86,4 +86,4 @@ IMPORTANT NOTES:
    Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le
 ```
-성공 시 해당 인증서의 경로 메모
+성공 시 해당 인증서의 경로 메모. 
